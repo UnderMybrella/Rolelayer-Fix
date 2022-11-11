@@ -117,3 +117,8 @@ dist
 .pnp.*
 
 .idea
+
+# Ignore the compilation results
+addon/background_scripts/
+addon/document_start/
+addon/document_end/

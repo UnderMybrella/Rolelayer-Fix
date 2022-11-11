@@ -2,7 +2,6 @@
 
    "permissions": [
       "http://*/",
-      "https://*/",
       "storage"
     ],
 
@@ -18,7 +17,7 @@
    "content_scripts": [
       {
          "css": [
-            "common.css"
+            "assets/css/common.css"
          ],
          "js": [
             "classnames.js",
@@ -40,7 +39,7 @@
       },
       {
          "css": [
-            "danganroleplay_all.css"
+            "assets/css/danganroleplay_all.css"
          ],
          "js": [
             "settingstorage.js",
@@ -57,7 +56,7 @@
       },
       {
          "css": [
-            "danganroleplay_comments.css"
+            "assets/css/danganroleplay_comments.css"
          ],
          "js": [
             "constants.js",
@@ -82,7 +81,7 @@
       },
       {
          "css": [
-            "danganronpa.css"
+            "assets/css/danganronpa.css"
          ],
          "js": [
             "constants.js",
@@ -105,22 +104,22 @@
    ],
    "description": "A fix for the current rolelayer extension.",
    "icons": {
-      "128": "icon-128.png",
-      "16": "icon-16.png",
-      "48": "icon-48.png",
-      "64": "icon-64.png",
-      "96": "icon-96.png"
+      "128": "assets/png/icon-128.png",
+      "16": "assets/png/icon-16.png",
+      "48": "assets/png/icon-48.png",
+      "64": "assets/png/icon-64.png",
+      "96": "assets/png/icon-96.png"
    },
    "manifest_version": 2,
    "name": "Mako's RoleLayer Fix",
    "options_ui": {
       "chrome_style": true,
-      "page": "options.html"
+      "page": "assets/html/options.html"
    },
 
-   "version": "0.7.13",
+   "version": "0.8.0",
    "web_accessible_resources": [
-      "icon-*.png",
-      "settings.png"
+      "assets/png/icon-*.png",
+      "assets/png/settings.png"
    ]
 }
