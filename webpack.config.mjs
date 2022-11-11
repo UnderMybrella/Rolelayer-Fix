@@ -6,17 +6,27 @@ const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = path.dirname(__filename);
 
-
+// noinspection JSUnusedGlobalSymbols
 export default {
     entry: {
-        background_scripts: "./background_scripts/background.js",
-        popup: "./popup/left-pad.js"
+        background_scripts: "./src/background.ts"
     },
     output: {
-        path: path.resolve(__dirname, "addon"),
-        filename: "[name]/index.js"
+        path: path.resolve(__dirname, "addon/dist"),
+        // filename: "[name].js"
     },
     mode: 'none',
-
+    module: {
+        rules: [
+            {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+            },
+        ],
+    },
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js'],
+    },
     plugins: [new WebExtPlugin({ sourceDir: path.resolve(__dirname, "addon") })],
 };
