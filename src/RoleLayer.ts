@@ -1,10 +1,16 @@
-export abstract class DRReddit {
-    abstract roleExists(name: string): Promise<boolean>
+export interface RoleLayer {
+    roleExists(key: string): Promise<boolean>
 
-    abstract getRole(name: string): Promise<DRRole>
+    getRole(key: string): Promise<DRRole>
 
-    abstract createRole(role: DRRole): Promise<DRRole>
-    abstract createRole(name: string, sprites: DRSpriteList, flairs: DRFlairList): Promise<DRRole>
+    addRole(key: string, role: DRRole): Promise<DRRole>;
+    createAndAddRole(key: string, name: string, sprites: DRSpriteList, flairs: DRFlairList): Promise<DRRole>
+
+    removeRole(key: string): Promise<DRRole>;
+}
+
+export interface DRCastList {
+    [key: string]: DRRole
 }
 
 export interface DRRole {

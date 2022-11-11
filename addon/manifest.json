@@ -11,6 +11,12 @@
       "dist/background.js"
     ]
   },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{c49d0562-5463-4d38-9dde-1fd082955fe0}"
+    }
+  },
+
   "content_scripts": [
     {
       "js": [

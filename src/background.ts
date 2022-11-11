@@ -1,6 +1,7 @@
-const browser = require("webextension-polyfill");
+import {RoleLayerBackground} from "./RoleLayerBackground";
+import {DRMessage, DRMessageType} from "./DRMessage";
 
-import {DRMessage, OpenSettings} from "./DRMessage";
+const browser = require("webextension-polyfill");
 
 const CHARACTER_MAP = {
     celestia: "celes",
@@ -38,21 +39,30 @@ function normaliseCharacterName(name: string): string {
 
 browser.runtime.onMessage.addListener(async (message: DRMessage, sender: any) => {
     switch (message.type) {
-        case "SETTINGS_OPEN":
+        case DRMessageType.SETTINGS_OPEN:
             return browser.runtime.openOptionsPage();
 
-        case "PROFILE_RETRIEVE":
+        case DRMessageType.RETRIEVE_PROFILE:
             return getCharacterProfile(message.character);
 
-        case "SPRITES_RESOLVE":
+        case DRMessageType.RESOLVE_SPRITES:
             return Promise.reject(new Error("TODO"));
-        case "SPRITES_GETLIST":
+        case DRMessageType.GET_LIST_SPRITES:
             return Promise.reject(new Error("TODO"));
+
+        case DRMessageType.ROLE_EXISTS:
+            return RoleLayerBackground.roleExists(message.key);
+        case DRMessageType.GET_ROLE:
+            return RoleLayerBackground.getRole(message.key);
+        case DRMessageType.ADD_ROLE:
+            return RoleLayerBackground.addRole(message.key, message.role);
+        case DRMessageType.REMOVE_ROLE:
+            return RoleLayerBackground.removeRole(message.key);
 
         default:
             const _exhaustiveCheck: never = message;
 
-            return Promise.reject(new Error(`Unknown message ${message}`));
+            return Promise.reject(new Error(`Unknown message ${JSON.stringify(message)}`));
     }
 });
 
