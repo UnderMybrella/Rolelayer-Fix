@@ -9,11 +9,13 @@ const __dirname = path.dirname(__filename);
 // noinspection JSUnusedGlobalSymbols
 export default {
     entry: {
-        background_scripts: "./src/background.ts"
+        background: "./src/background.ts",
+        test: "./src/test.ts"
     },
     output: {
         path: path.resolve(__dirname, "addon/dist"),
-        // filename: "[name].js"
+        // filename: "[name].js",
+        clean: true
     },
     mode: 'none',
     module: {
