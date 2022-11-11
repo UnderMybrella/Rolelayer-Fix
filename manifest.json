@@ -2,6 +2,7 @@
 
    "permissions": [
       "http://*/",
+      "https://*/",
       "storage"
     ],
 
