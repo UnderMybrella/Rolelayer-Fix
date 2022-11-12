@@ -1,4 +1,5 @@
 import {DRFlairList, DRRole, DRSpriteList, RoleLayer} from "./RoleLayer";
+import {sendAddRoleMessage, sendGetRoleMessage, sendRemoveRoleMessage, sendRoleExistsMessage} from "./DRMessage";
 
 export interface RoleLayerContentScript extends RoleLayer {
     prepareButtonMenu(target: Node): Promise<HTMLDivElement>
@@ -14,22 +15,26 @@ export const RoleLayerContentScript: RoleLayerContentScript = {
         return null;
     },
 
-    async roleExists(key: string): Promise<boolean> {
-        return true;
+    roleExists(key: string): Promise<boolean> {
+        return sendRoleExistsMessage(key);
     },
 
     async getRole(key: string): Promise<DRRole> {
-        return null;
+        return sendGetRoleMessage(key);
     },
 
     async addRole(key: string, role: DRRole): Promise<DRRole> {
-        return null;
+        return sendAddRoleMessage(key, role);
     },
     async createAndAddRole(key: string, name: string, sprites: DRSpriteList, flairs: DRFlairList): Promise<DRRole> {
-        return null;
+        return sendAddRoleMessage(key, {
+            name: name,
+            sprites: sprites,
+            flairs: flairs
+        });
     },
 
     async removeRole(key: string): Promise<DRRole> {
-        return null;
+        return sendRemoveRoleMessage(key);
     },
 }

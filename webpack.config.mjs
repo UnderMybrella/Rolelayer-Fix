@@ -10,6 +10,7 @@ const __dirname = path.dirname(__filename);
 export default {
     entry: {
         background: "./src/background.ts",
+        format: "./src/format.ts",
         test: "./src/test.ts"
     },
     output: {

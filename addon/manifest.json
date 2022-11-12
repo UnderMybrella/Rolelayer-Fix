@@ -16,11 +16,13 @@
       "id": "{c49d0562-5463-4d38-9dde-1fd082955fe0}"
     }
   },
-
   "content_scripts": [
     {
+      "css": [
+        "assets/css/common.css"
+      ],
       "js": [
-        "dist/test.js"
+        "dist/format.js"
       ],
       "matches": [
         "*://*.reddit.com/message/*",
@@ -33,32 +35,10 @@
         "*://*.reddit.com/r/danganroleplay/comments/*",
         "*://*.reddit.com/r/DRRPSpriteTester/comments/*",
         "*://*.reddit.com/r/vlnq/comments/*"
-      ]
+      ],
+      "run_at": "document_start"
     }
   ],
-  //   "content_scripts": [
-  //      {
-  //         "css": [
-  //            "assets/css/common.css"
-  //         ],
-  //         "js": [
-  //            "classnames.js",
-  //            "format.js"
-  //         ],
-  //         "matches": [
-  //            "*://*.reddit.com/message/*",
-  //            "*://*.reddit.com/user/*",
-  //            "*://*.reddit.com/r/DanganRonpa/comments/*",
-  //            "*://*.reddit.com/r/Danganronpa/comments/*",
-  //            "*://*.reddit.com/r/danganronpa/comments/*",
-  //            "*://*.reddit.com/r/DanganRoleplay/comments/*",
-  //            "*://*.reddit.com/r/Danganroleplay/comments/*",
-  //            "*://*.reddit.com/r/danganroleplay/comments/*",
-  //            "*://*.reddit.com/r/DRRPSpriteTester/comments/*",
-  //            "*://*.reddit.com/r/vlnq/comments/*"
-  //         ],
-  //         "run_at": "document_start"
-  //      },
   //      {
   //         "css": [
   //            "assets/css/danganroleplay_all.css"
