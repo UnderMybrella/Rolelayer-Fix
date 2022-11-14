@@ -8,7 +8,7 @@
     "persistent": false,
     "scripts": [
       //         "settingstorage.js",
-      "dist/background.js"
+      "dist/service.js"
     ]
   },
   "browser_specific_settings": {

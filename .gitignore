@@ -119,4 +119,7 @@ dist
 .idea
 
 # Ignore the compilation results
-addon/dist/
+firefox/assets
+firefox/dist
+chrome/assets
+chrome/dist
