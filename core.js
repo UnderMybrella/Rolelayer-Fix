@@ -56,6 +56,53 @@
         tag.className = "self username";
         section.appendChild(tag);
 
+		tag = document.createElement("span");
+		tag.className = "labeling";
+		tag.textContent = "Toggle Fanmade Sprites OFF";
+		section.appendChild(tag);
+
+		tag = document.createElement("label");
+		tag.textContent = "Toggle Original";
+		tag.className = "toggle-label";
+
+		let toggleCheckbox = document.createElement("input");
+		toggleCheckbox.type = "checkbox";
+		toggleCheckbox.className = "toggle-checkbox";
+
+		tag.appendChild(toggleCheckbox); // Append input element to the label
+
+		let toggleSlider = document.createElement("div");
+		toggleSlider.className = "slider round";
+
+		tag.appendChild(toggleSlider);
+
+		section.appendChild(tag);
+
+		/* const toggleCheckbox = document.createElement("input");
+		toggleCheckbox.type = "checkbox";
+		toggleCheckbox.className = "toggle-checkbox";
+		toggleLabel.insertBefore(toggleCheckbox, toggleLabel.firstChild);
+
+		const toggleSlider = document.createElement("div");
+		toggleSlider.className = "slider round";
+		toggleLabel.insertBefore(toggleSlider, toggleLabel.children[2]);*/
+
+		// BODY
+		section = document.createElement("div");
+		section.className = "body";
+		section.addEventListener(
+			"click",
+			function(evt) {
+				if (modal.classList.contains("rl-spritemenu"))
+					DR.triggerEvent("insertsprite", evt);
+				else if (modal.classList.contains("rl-mentionmenu"))
+					DR.triggerEvent("insertmention", evt);
+				else if (modal.classList.contains("rl-bulletmenu"))
+					DR.triggerEvent("insertbullet", evt);
+			},
+			true
+		);
+		modal.appendChild(section);
         // BODY
         section = document.createElement("div");
         section.className = "body";
@@ -232,16 +279,23 @@
                 inter = modal.querySelector(".body");
                 while (inter.firstChild) inter.removeChild(inter.firstChild);
 
-                return modal;
-            },
-            writable: false
-        },
-        hideHandbook: {
-            value: function () {
-                document.querySelector(".rl-modal").classList.remove("expanded");
-                document.querySelector(".rl-modal").classList.remove("visible");
-            }
-        },
+				return modal;
+			},
+			writable: false
+		},
+		hideHandbook: {
+			value: function() {
+				document.querySelector(".rl-modal").classList.remove("expanded");
+				document.querySelector(".rl-modal").classList.remove("visible");
+				//document.querySelector(".toggle-label").classList.remove("rlvisible");
+				const toggleLabel = document.querySelector(".toggle-label");
+				toggleLabel.classList.remove("rlvisible");
+				const labeling = document.querySelector(".labeling");
+				labeling.classList.remove("rlvisible");
+				const toggleCheckbox = document.querySelector(".toggle-checkbox");
+				toggleCheckbox.checked = false;
+				}
+		},
         getThreadSource: {
             writable: false,
             value: function () {
@@ -270,4 +324,76 @@
         "GET",
         location.origin + location.pathname + ".json"
     );
+
+	function createButton() {
+		let buttonGb = document.createElement('buttonGb');
+		buttonGb.textContent = 'Show all messages';
+		buttonGb.onclick = function() {
+		  window.location.href = 'https://www.reddit.com/r/DanganRoleplay/comments/';
+		};
+		return buttonGb;
+	}
+
+	var siteTable = document.getElementById('siteTable');
+	let isButton = false;
+
+    if (window.location.href.endsWith('DanganRoleplay/comments/') || window.location.href.endsWith('#ct') || window.location.href.endsWith('#pbotc')) {
+        var buttonCt = document.createElement('buttonCt');
+		var buttonPb = document.createElement('buttonPb');
+		let buttonGb = createButton();
+        buttonCt.textContent = 'Hide Pink Blood on the Clocktower comments';
+		buttonPb.textContent = 'Hide Class Trial comments';
+        buttonCt.onclick = function() {
+            window.location.href = 'https://www.reddit.com/r/DanganRoleplay/comments/#ct';
+			if (isButton == false) {
+			siteTable.parentNode.insertBefore(buttonGb, siteTable);
+			isButton == true;
+			}
+        };
+		buttonPb.onclick = function() {
+			window.location.href = 'https://www.reddit.com/r/DanganRoleplay/comments/#pbotc';
+			if (isButton == false) {
+				siteTable.parentNode.insertBefore(buttonGb, siteTable);
+				isButton == true;
+			}
+		}
+        siteTable.parentNode.insertBefore(buttonCt, siteTable);
+		siteTable.parentNode.insertBefore(buttonPb, siteTable);
+    }
+
+	if (window.location.href.endsWith('#ct') || window.location.href.endsWith('#pbotc')) {
+		let buttonGb = createButton();
+		siteTable.parentNode.insertBefore(buttonGb, siteTable);
+		isButton = true;
+	}
+
+	function hideElements() {
+		let buttonCt = document.getElementsByTagName('buttonCt')[0];
+		let buttonPb = document.getElementsByTagName('buttonPb')[0];
+        if (window.location.href.endsWith('#ct')) {
+			buttonCt.classList.add('in-page');
+			buttonCt.href = '';
+            let elements = document.getElementsByClassName('linkflair-pbotc');
+            for (let i = 0; i < elements.length; i++) {
+                elements[i].style.display = 'none';
+            }
+        }
+
+		if (window.location.href.endsWith('#pbotc')) {
+			buttonPb.classList.add('in-page');
+			buttonPb.href = '';
+			['linkflair-trial', 'linkflair-sidetrial', 'linkflair-expetrial'].forEach(className => {
+				Array.from(document.getElementsByClassName(className)).forEach(el => el.style.display = 'none');
+			});
+		}
+    }
+
+    var observer = new MutationObserver(hideElements);
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+
+    window.addEventListener('hashchange', hideElements);
+
+
 })(window.DRreddit, document);

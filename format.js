@@ -148,29 +148,32 @@ function loadSprites(thing) {
         });
     }
 
-    function normalizeImageSource(uri) {
-        let url = new URL(uri);
+	function normalizeImageSource(uri) {
+		let url = new URL(uri);
 
-        if (uri_appspot.test(uri)) {
-            return callBackground({
-                type: "SPRITES_RESOLVE",
-                uri: uri.toString()
-            });
-        }
+		// Check if the URL matches the r-drrp.appspot.com pattern
+		if (uri_appspot.test(uri)) {
+		  let character = url.pathname.split('/')[2];  // get the character name
+		  let number = url.pathname.split('_')[1].split('.')[0];  // get the number
 
-        // Ensure certain domains are loaded through https
-        if (uri_https.test(uri)) {
-            url.protocol = "https:";
-            uri = url.toString();
-        }
+		  // Form the new URL
+		  uri = `https://ik.imagekit.io/drrp/sprites/${character}/${number}.png`;
+		  return Promise.resolve(uri);
+		}
 
-        // Normalize Wikia images
-        if (uri.indexOf(".wikia.") > -1) {
-            uri = uri.replace(/revision\/latest.+$/, "").replace(/\/$/, "");
-        }
+		// Ensure certain domains are loaded through https
+		if (uri_https.test(uri)) {
+		  url.protocol = "https:";
+		  uri = url.toString();
+		}
 
-        return Promise.resolve(uri);
-    }
+		// Normalize Wikia images
+		if (uri.indexOf(".wikia.") > -1) {
+		  uri = uri.replace(/revision\/latest.+$/, "").replace(/\/$/, "");
+		}
+
+		return Promise.resolve(uri);
+	}
 
     function loadImage(src) {
         return fetch(src, {method: "HEAD"})
