@@ -252,7 +252,7 @@
     border-color:#aaff4e
 }
 .rl-spritemenu .body{
-    text-align:center
+    /*text-align:center*/
 }
 .rl-spritemenu .body::-webkit-scrollbar{
     width:14px;
