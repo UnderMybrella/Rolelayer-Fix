@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", executeFormat, true);
 
 var uri_appspot = RegExp("r-drrp\\.appspot\\.com"),
     uri_showdown = RegExp("mymjF4AZJrg|#rebuttal"),
-    uri_https = RegExp("i.imgur.com|media.tumblr.com"),
     uri_continue = RegExp("reddit.com/r/w+/comments/[a-z0-9]+/w+/[a-z0-9]+"),
     uri_ignored = RegExp(
         [
@@ -161,8 +160,7 @@ function loadSprites(thing) {
 		  return Promise.resolve(uri);
 		}
 
-		// Ensure certain domains are loaded through https
-		if (uri_https.test(uri)) {
+		if (url.protocol === "http:" && location.protocol === "https:") {
 		  url.protocol = "https:";
 		  uri = url.toString();
 		}
@@ -190,7 +188,11 @@ function loadSprites(thing) {
 
         console.log(src);
 
-        for (const [key, value] of Object.entries(await DRreddit.linkrot())) {
+        const linkrot = (await new Promise(function (resolve) {
+            chrome.runtime.sendMessage({type: "LINKROT"}, resolve)
+        })) || {};
+
+        for (const [key, value] of Object.entries(linkrot)) {
             if (src.match(key)) return loadImageFromSet(src, value, 0)
         }
 
@@ -244,9 +246,9 @@ function loadSpriteImage(a, p) {
 function loadEvidenceImage(a, p) {
     p.parentNode.classList.add(CLASSNAMES.DIALOGUE);
 
-    this.classList.add(CLASSNAMES.EVIDENCE);
-    p.parentNode.insertBefore(this, p.nextSibling);
+	this.classList.add(CLASSNAMES.EVIDENCE);
+	p.parentNode.insertBefore(this, p.nextSibling);
 
-    this.onload = null;
-    this.onerror = null;
+	this.onload = null;
+	this.onerror = null;
 }
