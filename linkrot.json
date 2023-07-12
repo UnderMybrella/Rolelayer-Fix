@@ -12,8 +12,12 @@
   },
   "{{tumblr}}": {
     "e93fe3c022fd73ee9731721b0946b7dd/tumblr_inline_mt8v2zcPAP1rd17gc.pngyour": "{{HOST}}/kiyotaka/00.png",
-    "cea199aab53a7ec850d63fcc5fcbc29%0Ac/tumblr_inline_mr6pmcd67v1qz4rgp.png": "{{HOST}}/monokuma/13.png",
-    "91c37d1bab6945g73bce04ae94fb39d17/tumblr_inline_mr6rxkFCfv1qz4rgp.png": "{{HOST}}/hiyoko/16.png"
+    "cea199aab53a7ec850d63fcc5fcbc29\nc/tumblr_inline_mr6pmcd67v1qz4rgp.png": "{{HOST}}/monokuma/13.png",
+    "91c37d1bab6945g73bce04ae94fb39d17/tumblr_inline_mr6rxkFCfv1qz4rgp.png": "{{HOST}}/hiyoko/16.png",
+    "bb119449468377b593559C8791dfeccd8/tumblr_o5785vR30Q1qzzczko10_500.png": "{{HOST_UDG}}/komaru/19.png"
+  },
+  "abimon.org/dr/busts": {
+    "/(?<character>\\w+)/(?<sprite>\\d)": "{{HOST}}/{{%character%}}/0{{%sprite%}}.png"
   },
   "1.media.dorkly.cvcdn.com": {
     "/14/90/2ceae5e422f43ae5255323c9cbc2fb4a.jpg": "https://web.archive.org/web/20160510172901if_/https://1.media.dorkly.cvcdn.com/14/90/2ceae5e422f43ae5255323c9cbc2fb4a.jpg"

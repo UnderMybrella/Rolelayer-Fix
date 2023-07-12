@@ -198,13 +198,35 @@ function loadImageSet(src) {
 }
 
 function loadImageFromSet(src, set, i) {
-    if (i > set.length) {
+    if (i > set[0].length) {
         return makeImagePromise(src);
     }
 
-    console.log(`Loading image from set for ${src} => ${set[i]}`)
+    let url = normaliseLinkrotSrc(set[0][i], set[1]);
 
-    return fetchImage(set[i], () => loadImageFromSet(src, set, i + 1));
+    console.log(`Loading image from set for ${src} => ${url}`)
+
+    return fetchImage(url, () => loadImageFromSet(src, set, i + 1));
+}
+
+function normaliseLinkrotSrc(src, matches) {
+    if (typeof src !== "string") src += "";
+    if (!src.includes("{{%")) return src;
+
+    console.log(`NORMALISING ${src}`)
+    console.log(matches)
+
+    for (const match of matches) {
+        if (match) {
+            console.log(match);
+            for (const [k, v] of Object.entries(match)) {
+                console.log(`REPLACING ${k} => ${v}`)
+                src = src.replace(`{{%${k}%}}`, v);
+            }
+        }
+    }
+
+    return src;
 }
 
 function makeImage(src, onLoad, onError) {

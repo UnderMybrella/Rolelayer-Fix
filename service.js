@@ -1,4 +1,6 @@
 const SPRITE_HOST = "https://abimon.org/dr/busts";
+const SPRITE_HOST_UDG = `${SPRITE_HOST}/udg/resized`
+const SPRITE_HOST_V3 = `${SPRITE_HOST}/spoilers/v3`
 
 
 function normalizeCharacterName(name) {
@@ -37,6 +39,7 @@ const character_map = {
 const LINKROT_TABLE = fetch("linkrot.json")
     .then(response => response.json())
     .then(json => normaliseLinkrot(json));
+let LINKROT_CACHE = {};
 
 // LISTENER
 
@@ -258,23 +261,36 @@ function normaliseLinkrotKey(key) {
 }
 
 function normaliseLinkrotValue(value) {
-    return value.replace("{{HOST}}", SPRITE_HOST);
+    return value.replace("{{HOST}}", SPRITE_HOST)
+        .replace("{{HOST_UDG}}", SPRITE_HOST_UDG);
 }
 
 function escapeRegex(string) {
     return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 }
 
-function resolveLinkrot(url, linkrot) {
+function resolveLinkrot(url, linkrot, matches) {
     console.log(`Resolving ${url}`);
 
     for (const [key, value] of Object.entries(linkrot)) {
-        if (url.match(key)) {
+        let regex = LINKROT_CACHE[key];
+        if (regex === undefined) {
+            regex = new RegExp(key);
+            LINKROT_CACHE[key] = regex;
+        }
+
+        let match = url.match(regex);
+
+        if (match !== null) {
             console.log(`Matched ${key} to ${value}`)
-            if (Array.isArray(value)) return Promise.resolve(value);
-            else return resolveLinkrot(url, value);
+            if (Array.isArray(matches)) matches.push(match.groups);
+            else matches = [match.groups];
+
+            if (Array.isArray(value)) return Promise.resolve([value, matches]);
+            else return resolveLinkrot(url, value, matches);
         }
     }
 
     return Promise.reject("No url matched");
 }
+
