@@ -140,89 +140,91 @@ function loadSprites(thing) {
                 });
         }
     }
+}
 
-    function callBackground(message) {
-        return new Promise(function (resolve) {
-            chrome.runtime.sendMessage(message, resolve);
+function callBackground(message) {
+    return new Promise(function (resolve) {
+        chrome.runtime.sendMessage(message, resolve);
+    });
+}
+
+function normalizeImageSource(uri) {
+    let url = new URL(uri);
+
+    // Check if the URL matches the r-drrp.appspot.com pattern
+    if (uri_appspot.test(uri)) {
+        let character = url.pathname.split('/')[2];  // get the character name
+        let number = url.pathname.split('_')[1].split('.')[0];  // get the number
+
+        // Form the new URL
+        uri = `https://ik.imagekit.io/drrp/sprites/${character}/${number}.png`;
+        return Promise.resolve(uri);
+    }
+
+    if (url.protocol === "http:" && location.protocol === "https:") {
+        url.protocol = "https:";
+        uri = url.toString();
+    }
+
+    // Normalize Wikia images
+    if (uri.indexOf(".wikia.") > -1) {
+        uri = uri.replace(/revision\/latest.+$/, "").replace(/\/$/, "");
+    }
+
+    return Promise.resolve(uri);
+}
+
+function loadImage(src) {
+    console.log(`Loading ${src}`)
+    return fetchImage(src, () => loadImageSet(src))
+        .then(img => {
+            console.log(`Finally loaded ${src} to ${img}`)
+            return img
+        }, e => {
+            console.log(`Failed to load ${src}`)
+            console.log(e)
+            throw e
         });
+}
+
+function loadImageSet(src) {
+    src = decodeURIComponent(src);
+
+    console.log(`Loading Image Set of ${src}`)
+
+    return new Promise(function (resolve) {
+        chrome.runtime.sendMessage({type: "LINKROT", url: src}, resolve)
+    }).then(set => loadImageFromSet(src, set, 0), () => makeImagePromise(src));
+}
+
+function loadImageFromSet(src, set, i) {
+    if (i > set.length) {
+        return makeImagePromise(src);
     }
 
-	function normalizeImageSource(uri) {
-		let url = new URL(uri);
+    console.log(`Loading image from set for ${src} => ${set[i]}`)
 
-		// Check if the URL matches the r-drrp.appspot.com pattern
-		if (uri_appspot.test(uri)) {
-		  let character = url.pathname.split('/')[2];  // get the character name
-		  let number = url.pathname.split('_')[1].split('.')[0];  // get the number
+    return fetchImage(set[i], () => loadImageFromSet(src, set, i + 1));
+}
 
-		  // Form the new URL
-		  uri = `https://ik.imagekit.io/drrp/sprites/${character}/${number}.png`;
-		  return Promise.resolve(uri);
-		}
+function makeImage(src, onLoad, onError) {
+    console.log(`Making image for ${src}`);
 
-		if (url.protocol === "http:" && location.protocol === "https:") {
-		  url.protocol = "https:";
-		  uri = url.toString();
-		}
+    const image = new Image();
+    image.onload = () => onLoad(image);
+    image.onerror = onError;
+    image.src = src;
+}
 
-		// Normalize Wikia images
-		if (uri.indexOf(".wikia.") > -1) {
-		  uri = uri.replace(/revision\/latest.+$/, "").replace(/\/$/, "");
-		}
+function makeImagePromise(src, onError) {
+    console.log(`Making image promise for ${src}`);
+    return new Promise((resolve, reject) => makeImage(src, resolve, onError === undefined ? reject : () => onError().then(resolve, reject)))
+}
 
-		return Promise.resolve(uri);
-	}
-
-    function loadImage(src) {
-        return fetch(src, {method: "HEAD"})
-            .then(response => response.status === 200 ? new Promise(function (resolve, reject) {
-                const image = new Image();
-                image.onload = () => resolve(image);
-                image.onerror = () => loadImageSet(src);
-                image.src = response.url;
-            }) : loadImageSet(src), () => loadImageSet(src));
-    }
-
-    async function loadImageSet(src) {
-        src = decodeURIComponent(src);
-
-        console.log(src);
-
-        const linkrot = (await new Promise(function (resolve) {
-            chrome.runtime.sendMessage({type: "LINKROT"}, resolve)
-        })) || {};
-
-        for (const [key, value] of Object.entries(linkrot)) {
-            if (src.match(key)) return loadImageFromSet(src, value, 0)
-        }
-
-        //No valid link to replace, default handling
-        return new Promise(function (resolve, reject) {
-            const image = new Image();
-            image.onload = () => resolve(image);
-            image.onerror = reject;
-            image.src = src;
-        })
-    }
-
-    function loadImageFromSet(src, set, i) {
-        if (i > set.length) {
-            return new Promise(function (resolve, reject) {
-                const image = new Image();
-                image.onload = () => resolve(image);
-                image.onerror = reject;
-                image.src = src;
-            });
-        }
-
-        return fetch(set[i], {method: "HEAD"})
-            .then(response => response.status === 200 ? new Promise(function (resolve) {
-                const image = new Image();
-                image.onload = () => resolve(image);
-                image.onerror = () => loadImageFromSet(src, set, i + 1);
-                image.src = response.url;
-            }) : loadImageFromSet(src, set, i + 1), () => loadImageFromSet(src, set, i + 1));
-    }
+function fetchImage(src, onError) {
+    console.log(`Fetching ${src}`)
+    return fetch(src, {method: "HEAD"})
+        .then(response => response.status === 200 ? makeImagePromise(response.url, onError) : onError(), () => makeImagePromise(src, onError));
 }
 
 function loadSpriteImage(a, p) {
@@ -246,9 +248,9 @@ function loadSpriteImage(a, p) {
 function loadEvidenceImage(a, p) {
     p.parentNode.classList.add(CLASSNAMES.DIALOGUE);
 
-	this.classList.add(CLASSNAMES.EVIDENCE);
-	p.parentNode.insertBefore(this, p.nextSibling);
+    this.classList.add(CLASSNAMES.EVIDENCE);
+    p.parentNode.insertBefore(this, p.nextSibling);
 
-	this.onload = null;
-	this.onerror = null;
+    this.onload = null;
+    this.onerror = null;
 }

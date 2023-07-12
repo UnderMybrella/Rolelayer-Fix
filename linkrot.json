@@ -1,9 +1,33 @@
 {
   "{{wikia}}": {
     "/danganronpa/images": {
-      "<< /0/0d/Togami.png >>": "https://abimon.org/dr/busts/byakuya/00.png",
-      "<< /2/2b/Togami_(15).png >>": "https://abimon.org/dr/busts/byakuya/14.png",
-      "<< /7/73/Togami_(7).png >>": "https://abimon.org/dr/busts/byakuya/06.png"
+      "#comment": "",
+      "<< /0/0d/Togami.png >>": "{{HOST}}/byakuya/00.png",
+      "<< /7/73/Togami_(7).png >>": "{{HOST}}/byakuya/06.png",
+      "<< /2/2b/Togami_(15).png >>": "{{HOST}}/byakuya/14.png"
     }
-  }
+  },
+  "danganronpa.(wikia|fandom).com/wiki/": {
+    "<< Sprites:Hiyoko_Saionji?file=Saionji_%286%29.png >>": "{{HOST}}/hiyoko/05.png"
+  },
+  "{{tumblr}}": {
+    "e93fe3c022fd73ee9731721b0946b7dd/tumblr_inline_mt8v2zcPAP1rd17gc.pngyour": "{{HOST}}/kiyotaka/00.png",
+    "cea199aab53a7ec850d63fcc5fcbc29%0Ac/tumblr_inline_mr6pmcd67v1qz4rgp.png": "{{HOST}}/monokuma/13.png",
+    "91c37d1bab6945g73bce04ae94fb39d17/tumblr_inline_mr6rxkFCfv1qz4rgp.png": "{{HOST}}/hiyoko/16.png"
+  },
+  "1.media.dorkly.cvcdn.com": {
+    "/14/90/2ceae5e422f43ae5255323c9cbc2fb4a.jpg": "https://web.archive.org/web/20160510172901if_/https://1.media.dorkly.cvcdn.com/14/90/2ceae5e422f43ae5255323c9cbc2fb4a.jpg"
+  },
+  "cdn-ak.f.st-hatena.com": {
+    "/images/fotolife/b/bigmackitty/20130615/": {
+      "20130615054608.png": "{{HOST}}/kiyotaka/02.png",
+      "20130615054733.png": "{{HOST}}/kiyotaka/17.png"
+    }
+  },
+  "cdn.bulbagarden.net/upload/4/46/019Rattata.png": "https://archives.bulbagarden.net/media/upload/archive/a/aa/20230409183110%210019Rattata.png",
+  "data.whicdn.com": {
+    "#images/79123842/large.png": "The comment is a reference to Chiaki playing the triangle 'like before'; the only thing I can think of is the toy camera CG from DR2-3",
+    "/images/79123842/large.png": "https://static.wikia.nocookie.net/danganronpa/images/7/74/Danganronpa_2_CG_-_Toy_Camera_Event_(1).png"
+  },
+  "dunum.ch/WebRoot/Store2/Shops/172505/5377/A7A8/106C/1A15/80BE/D91A/30F9/0B0D/Small_Round_Bell_4c6bcf954dfae_m.jpg": "https://web.archive.org/web/20140626082012if_/http://dunum.ch/WebRoot/Store2/Shops/172505/5377/A7A8/106C/1A15/80BE/D91A/30F9/0B0D/Small_Round_Bell_4c6bcf954dfae_m.jpg"
 }
