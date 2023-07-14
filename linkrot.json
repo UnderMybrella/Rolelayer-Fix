@@ -1,14 +1,28 @@
 {
   "{{wikia}}": {
     "/danganronpa/images": {
-      "#comment": "",
       "<< /0/0d/Togami.png >>": "{{HOST}}/byakuya/00.png",
       "<< /7/73/Togami_(7).png >>": "{{HOST}}/byakuya/06.png",
       "<< /2/2b/Togami_(15).png >>": "{{HOST}}/byakuya/14.png"
     }
   },
   "danganronpa.(wikia|fandom).com/wiki/": {
-    "<< Sprites:Hiyoko_Saionji?file=Saionji_%286%29.png >>": "{{HOST}}/hiyoko/05.png"
+    "<< Sprites:Hiyoko_Saionji?file= >>": {
+      "Saionji_": {
+        "\\%28(?<sprite>\\d{1,2})\\%29.png": "{{HOST}}/hiyoko/{{%_hiyokoSprites%}}.png"
+      }
+    },
+    "<< Sprites:Kyoko_Kirigiri?file= >>": {
+      "5\\%28(?<sprite>\\d{2,3})\\%29.png": "{{HOST}}/kyoko/{{%_kyokoSprites%}}.png"
+    },
+    "<< Sprites:Leon_Kuwata?file= >>": {
+      "5\\%28(?<sprite>\\d{2})\\%29.png": "{{HOST}}/leon/{{%_leonSprites%}}.png"
+    },
+    "<< Sprites:Mikan_Tsumiki?file= >>": {
+      "Tsumiki_": {
+        "\\%28(?<sprite>\\d{1,2})\\%29.png": "{{HOST}}/mikan/{{%_mikanSprites%}}.png"
+      }
+    }
   },
   "{{tumblr}}": {
     "e93fe3c022fd73ee9731721b0946b7dd/tumblr_inline_mt8v2zcPAP1rd17gc.pngyour": "{{HOST}}/kiyotaka/00.png",
@@ -16,8 +30,23 @@
     "91c37d1bab6945g73bce04ae94fb39d17/tumblr_inline_mr6rxkFCfv1qz4rgp.png": "{{HOST}}/hiyoko/16.png",
     "bb119449468377b593559C8791dfeccd8/tumblr_o5785vR30Q1qzzczko10_500.png": "{{HOST_UDG}}/komaru/19.png"
   },
-  "abimon.org/dr/busts": {
-    "/(?<character>\\w+)/(?<sprite>\\d)": "{{HOST}}/{{%character%}}/0{{%sprite%}}.png"
+  "abimon.org/dr": {
+    "/busts": {
+      "/(?<character>\\w+)/(?<sprite>\\d)\\.": "{{HOST}}/{{%character%}}/0{{%sprite%}}.png",
+      "/(?<character>\\w+)/(?<sprite>\\d{2})png": "{{HOST}}/{{%character%}}/{{%sprite%}}.png",
+      "/(?<character>\\w+)/(?<sprite>\\d{2})\\,": "{{HOST}}/{{%character%}}/{{%sprite%}}.png",
+      "/(?<character>\\w+)/(?<sprite>\\d{2})\\.png\\.": "{{HOST}}/{{%character%}}/{{%sprite%}}.png",
+      "/(?<character>\\w+)/0(?<sprite>\\d{2})": "{{HOST}}/{{%character%}}/{{%sprite%}}.png",
+      "/(?<sprite>\\d{2})/(?<character>\\w+)/\\.png": "{{HOST}}/{{%character%}}/{{%sprite%}}.png",
+      "/(?<character>\\w+)(?<sprite>\\d{2})/\\.": "{{HOST}}/{{%character%}}/{{%sprite%}}.png",
+      "/(?<character>\\w+)/(?<sprite>\\d{2})\\.png ": "{{HOST}}/{{%character%}}/{{%sprite%}}.png",
+
+      "/hfiumi/(?<sprite>\\d{2})\\.": "{{HOST}}/hifumi/{{%sprite%}}.png"
+    },
+    "/buss": {
+      "/(?<character>\\w+)/(?<sprite>\\d)\\.": "{{HOST}}/{{%character%}}/0{{%sprite%}}.png",
+      "/(?<character>\\w+)/(?<sprite>\\d{2})\\.": "{{HOST}}/{{%character%}}/{{%sprite%}}.png"
+    }
   },
   "1.media.dorkly.cvcdn.com": {
     "/14/90/2ceae5e422f43ae5255323c9cbc2fb4a.jpg": "https://web.archive.org/web/20160510172901if_/https://1.media.dorkly.cvcdn.com/14/90/2ceae5e422f43ae5255323c9cbc2fb4a.jpg"
@@ -33,5 +62,13 @@
     "#images/79123842/large.png": "The comment is a reference to Chiaki playing the triangle 'like before'; the only thing I can think of is the toy camera CG from DR2-3",
     "/images/79123842/large.png": "https://static.wikia.nocookie.net/danganronpa/images/7/74/Danganronpa_2_CG_-_Toy_Camera_Event_(1).png"
   },
-  "dunum.ch/WebRoot/Store2/Shops/172505/5377/A7A8/106C/1A15/80BE/D91A/30F9/0B0D/Small_Round_Bell_4c6bcf954dfae_m.jpg": "https://web.archive.org/web/20140626082012if_/http://dunum.ch/WebRoot/Store2/Shops/172505/5377/A7A8/106C/1A15/80BE/D91A/30F9/0B0D/Small_Round_Bell_4c6bcf954dfae_m.jpg"
+  "dunum.ch/WebRoot/Store2/Shops/172505/5377/A7A8/106C/1A15/80BE/D91A/30F9/0B0D/Small_Round_Bell_4c6bcf954dfae_m.jpg": "https://web.archive.org/web/20140626082012if_/http://dunum.ch/WebRoot/Store2/Shops/172505/5377/A7A8/106C/1A15/80BE/D91A/30F9/0B0D/Small_Round_Bell_4c6bcf954dfae_m.jpg",
+
+  "cdn.discordapp.com/attachments": {
+    "/169347820619300866/228231920448700417/15.png": "{{HOST}}/hiyoko/15.png"
+  },
+
+  "r-drrp.appspot.com/characters": {
+    "/(?<character>\\w+)/bust_(?<sprite>\\d{2})\\.png": "{{HOST}}/{{%character%}}/{{%sprite%}}.png"
+  }
 }

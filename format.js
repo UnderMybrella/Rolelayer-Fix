@@ -10,7 +10,8 @@ var uri_appspot = RegExp("r-drrp\\.appspot\\.com"),
             "#ignore",
             ".json",
             "youtu.?be",
-            "discord",
+            // I'm not sure why we're ignoring discord links??
+            // "discord",
             "redd.it/",
             "reddit.com/",
             "localhost"
@@ -125,6 +126,7 @@ function loadSprites(thing) {
 
             // IGNORED URL PATTERNS
             if (uri_ignored.test(uri)) continue;
+            if (uri.includes("discord") && !(uri.includes("cdn") || uri.includes("media") || uri.includes("images"))) continue;
 
             // if (uri_continue.test(uri)) {
             // 	paragraph.classList.add(CLASSNAMES.COMMENT_COMESFROM);
@@ -194,7 +196,7 @@ function loadImageSet(src) {
 
     return new Promise(function (resolve) {
         chrome.runtime.sendMessage({type: "LINKROT", url: src}, resolve)
-    }).then(set => loadImageFromSet(src, set, 0), () => makeImagePromise(src));
+    }).then(set => Array.isArray(set) ? loadImageFromSet(src, set, 0) : makeImagePromise(src), () => makeImagePromise(src));
 }
 
 function loadImageFromSet(src, set, i) {
@@ -209,24 +211,79 @@ function loadImageFromSet(src, set, i) {
     return fetchImage(url, () => loadImageFromSet(src, set, i + 1));
 }
 
+//(?:#(?<formatting>.+?))?
+const LINKROT_REGEX = new RegExp(/{{%(?<key>\w+)%}}/g);
+const LINKROT_FORMATTER = new RegExp(/(?<key>\w+)\[(?<value>.+?)\]/g);
+
 function normaliseLinkrotSrc(src, matches) {
     if (typeof src !== "string") src += "";
     if (!src.includes("{{%")) return src;
 
     console.log(`NORMALISING ${src}`)
     console.log(matches)
+    let matcher = {};
 
     for (const match of matches) {
         if (match) {
-            console.log(match);
             for (const [k, v] of Object.entries(match)) {
-                console.log(`REPLACING ${k} => ${v}`)
-                src = src.replace(`{{%${k}%}}`, v);
+                matcher[k] = v;
             }
         }
     }
 
-    return src;
+    return normaliseLinkrotFromMatcher(src, matcher);
+}
+
+function normaliseLinkrotFromMatcher(src, matcher) {
+    return src.replace(LINKROT_REGEX, (match, key, formatting) => {
+        if (key.startsWith("_")) {
+            key = key.substring(1);
+            console.log(`RUNNING LINKROT[${key}]`)
+            const func = LINKROT[key];
+            console.log("LINKROT: ");
+            console.log(LINKROT);
+            console.log(func);
+            if (typeof func === "undefined") return match;
+
+            return func(matcher);
+        }
+
+        let value = matcher[key];
+        if (typeof value === "undefined") return match;
+
+        return value;
+
+        // for (let array of formatting.matchAll(LINKROT_FORMATTER)) {
+        //     const formatKey = array.groups.key;
+        //     const formatValue = array.groups.value;
+        //
+        //     console.log(`Formatting ${formatKey} w/ ${formatValue} => ${value}`);
+        //
+        //     switch (formatKey) {
+        //         case "add":
+        //             if (typeof value === "number") value = value + (parseFloat(formatValue) || 0);
+        //             else value = (parseFloat(value) || 0) + (parseFloat(formatValue) || 0);
+        //             break;
+        //         case "sub":
+        //             if (typeof value === "number") value = value - (parseFloat(formatValue) || 0);
+        //             else value = (parseFloat(value) || 0) - (parseFloat(formatValue) || 0);
+        //             break;
+        //         case "digits":
+        //             if (typeof value === "number") value = value.toLocaleString("en-US", {
+        //                 minimumIntegerDigits: parseInt(formatValue) || 2,
+        //                 useGrouping: false
+        //             });
+        //             break;
+        //         default:
+        //             console.error(`Unknown linkrot format operation ${formatKey}[${formatValue}]`)
+        //             break;
+        //     }
+        //
+        //     console.log(`Formatting ${formatKey} w/ ${formatValue} => ${value}`);
+        // }
+
+        return value;
+    })
 }
 
 function makeImage(src, onLoad, onError) {

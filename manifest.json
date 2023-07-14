@@ -16,6 +16,7 @@
         ],
         "js": [
           "classnames.js",
+          "linkrot.js",
           "format.js"
         ],
         "matches": [
