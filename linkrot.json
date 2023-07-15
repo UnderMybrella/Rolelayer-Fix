@@ -3,7 +3,8 @@
     "/danganronpa/images": {
       "<< /0/0d/Togami.png >>": "{{HOST}}/byakuya/00.png",
       "<< /7/73/Togami_(7).png >>": "{{HOST}}/byakuya/06.png",
-      "<< /2/2b/Togami_(15).png >>": "{{HOST}}/byakuya/14.png"
+      "<< /2/2b/Togami_(15).png >>": "{{HOST}}/byakuya/14.png",
+      "(?<cat>\\d)(\\%28|\\()(?<sprite>\\d{1,3})(\\%29|\\)).png": "{{HOST}}/{{%_earlyWikiaSprites%}}.png"
     }
   },
   "danganronpa.(wikia|fandom).com/wiki/": {
