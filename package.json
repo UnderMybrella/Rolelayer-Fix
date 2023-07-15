@@ -1,0 +1,10 @@
+{
+  "name": "rolelayer_fix",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "mocha"
+  },
+  "devDependencies": {
+    "mocha": "^10.2.0"
+  }
+}
