@@ -8,3 +8,4 @@ docs/.obsidian/*
 !docs/.obsidian/core-plugins.json
 !docs/.obsidian/graph.json
 !docs/.obsidian/hotkeys.json
+node_modules/
